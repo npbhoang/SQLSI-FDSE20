@@ -247,8 +247,7 @@ introductionContentView model =
         [ div [ style "margin" "5%" ] [ 
             text "This web service is intended for readers of our manuscripts:"
             , ul [] [
-                li [ style "font-weight" "500" ] [ text "Model-based characterization of fine-grained access control authorization for SQL queries" ]
-                , li [ style "font-weight" "500" ] [ text "A model-driven approach for enforcing fine-grained access control authorization for SQL queries" ]
+                li [ style "font-weight" "500" ] [ text "A model-driven approach for enforcing fine-grained access control authorization for SQL queries" ]
                 ]
             , text "In particular, the contextual model is fixed on the model University, as described in our manuscripts, namely:"
         ]
