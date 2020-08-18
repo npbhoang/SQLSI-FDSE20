@@ -7,3 +7,4 @@ repl-temp-*
 # linking file
 DONOTCOMMIT/*
 Http/Request.elm
+index.html
