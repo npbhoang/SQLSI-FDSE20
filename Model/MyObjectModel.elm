@@ -3,6 +3,8 @@ module Model.MyObjectModel exposing (..)
 import Json.Decode as Decode exposing (Decoder, list, string)
 import Json.Decode.Pipeline exposing (required)
 import Json.Encode as Encode
+import List exposing (member, map)
+import String exposing (isEmpty)
 
 type alias Student =
     { id : String
@@ -147,3 +149,71 @@ lecturerEncoder id name email =
 enrollmentEncoder : String -> String -> Encode.Value
 enrollmentEncoder students lecturers =
     Encode.object [ ( "students", Encode.string students ), ( "lecturers", Encode.string lecturers ) ]
+
+getStudentId : Student -> String
+getStudentId student = student.id 
+
+checkStudentIdUnique : String -> List Student -> Bool
+checkStudentIdUnique id list =
+    let ids = List.map getStudentId list
+    in not (isEmpty id) && not (member id ids)
+
+getStudentName : Student -> String
+getStudentName student = student.name
+
+checkStudentNameUnique  : String -> List Student -> Bool
+checkStudentNameUnique  name list =
+    let names = List.map getStudentName list
+    in not (member name names)
+
+getStudentEmail : Student -> String
+getStudentEmail student = student.email
+
+checkStudentEmailUnique  : String -> List Student -> Bool
+checkStudentEmailUnique  email list =
+    let emails = List.map getStudentEmail list
+    in not (member email emails)
+
+getLecturerId : Lecturer -> String
+getLecturerId lecturer = lecturer.id 
+
+checkLecturerIdUnique  : String -> List Lecturer -> Bool
+checkLecturerIdUnique  id list =
+    let ids = List.map getLecturerId list
+    in not (isEmpty id) && not (member id ids)
+
+getLecturerName : Lecturer -> String
+getLecturerName lecturer = lecturer.name
+
+checkLecturerNameUnique : String -> List Lecturer -> Bool
+checkLecturerNameUnique name list =
+    let names = List.map getLecturerName list
+    in not (member name names)
+
+getLecturerEmail : Lecturer -> String
+getLecturerEmail lecturer = lecturer.email
+
+checkLecturerEmailUnique  : String -> List Lecturer -> Bool
+checkLecturerEmailUnique  email list =
+    let emails = List.map getLecturerEmail list
+    in not (member email emails)
+
+getEnrollmentStudents : Enrollment -> String
+getEnrollmentStudents enrollment = enrollment.students
+
+getEnrollmentLecturers : Enrollment -> String
+getEnrollmentLecturers enrollment = enrollment.lecturers
+
+checkEnrollmentUnique  : String -> String -> List Enrollment -> Bool
+checkEnrollmentUnique  students lecturers list =
+    let studentList = List.map getEnrollmentStudents list
+        lecturerList = List.map getEnrollmentLecturers list
+    in not (member students studentList) && not (member lecturers lecturerList)
+
+checkStudentUnique : String -> String -> String -> List Student -> Bool
+checkStudentUnique id name email list =
+    checkStudentIdUnique id list && checkStudentNameUnique name list && checkStudentEmailUnique email list
+
+checkLecturerUnique : String -> String -> String -> List Lecturer -> Bool
+checkLecturerUnique id name email list =
+    checkLecturerIdUnique id list && checkLecturerNameUnique name list && checkLecturerEmailUnique email list

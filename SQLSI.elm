@@ -9,7 +9,7 @@ import Browser
 import Color
 import Json.Encode as Encode
 import Html exposing (Html, Attribute, div, text, a, i, br, ul, li, button, pre, code, input, table, th, tr, td, h3, img)
-import Html.Attributes exposing (style, placeholder, href, target, src, width, height, value)
+import Html.Attributes exposing (style, placeholder, href, target, src, width, height, value, disabled)
 import Html.Events exposing (onClick, onInput)
 import Http exposing (Error(..))
 import Material.Icons as Filled exposing (bookmarks, delete, person_add)
@@ -31,11 +31,22 @@ type alias MyObjectModelResponse =
     , newStudentId : String
     , newStudentName : String
     , newStudentEmail : String
+    , newStudentIsValid : Bool
+    , studentNameStyle : String
+    , studentIdStyle : String
+    , studentEmailStyle: String
     , newLecturerId : String
     , newLecturerName : String
     , newLecturerEmail : String
+    , lecturerNameStyle : String
+    , lecturerIdStyle : String
+    , lecturerEmailStyle: String
+    , newLecturerIsValid : Bool
     , newEnrollmentStudents : String
     , newEnrollmentLecturers : String
+    , enrollmentStudentsStyle : String
+    , enrollmentLecturersStyle : String
+    , newEnrollmentIsValid : Bool
     , mySQLSchema : String
     , mySQLPolicy : String
     }
@@ -229,9 +240,9 @@ middleMainDiv model =
         , div [style "font-family" "Times New Roman"
         , style "font-size" "20px"
         , style "margin" "5% 5% 5px 5%"] [
-            text "Please, be aware that SQLSI is an on-going research project."
+            text "Please, be aware that SQLSI is an on-going research project. SQLSI does not cover yet the full SQL language. In particular, it covers the JOIN clause, WHERE clause and sub-select as described in the manuscripts."
             , br [] []
-            , text "SQLSI does not cover yet the full SQL language. In particular, it covers the JOIN clause, WHERE clause and sub-select as described in the manuscripts."
+            , text "The database instance depicts scenario VGU#2 in the manuscript. Note that, the fields inlcude unique constraints and delete does not allow cascading."
         ]
         , div [ style "margin" "1%" ] [ objectModelView model ]
         , div [ style "padding-top" "10px", style "background-color" "white" ] [ queryView model ]
@@ -455,7 +466,9 @@ viewMyObjectModel omResponse =
                 ]
                 ([ viewStudentTableHeader ]
                     ++ List.map viewStudent omResponse.om.students
-                    ++ [addNewStudentView omResponse.newStudentId omResponse.newStudentName omResponse.newStudentEmail]
+                    ++ [addNewStudentView omResponse.newStudentId 
+                    omResponse.newStudentName omResponse.newStudentEmail omResponse.newStudentIsValid
+                    omResponse.studentIdStyle omResponse.studentNameStyle omResponse.studentEmailStyle]
                 )
             ]
         , div
@@ -474,7 +487,9 @@ viewMyObjectModel omResponse =
                 ]
                 ([ viewLecturerTableHeader ] 
                 ++ List.map viewLecturer omResponse.om.lecturers
-                ++ [addNewLecturerView omResponse.newLecturerId omResponse.newLecturerName omResponse.newLecturerEmail]
+                ++ [addNewLecturerView omResponse.newLecturerId 
+                omResponse.newLecturerName omResponse.newLecturerEmail omResponse.newLecturerIsValid
+                omResponse.lecturerIdStyle omResponse.lecturerNameStyle omResponse.lecturerEmailStyle]
                 )
             ]
         , div
@@ -493,52 +508,54 @@ viewMyObjectModel omResponse =
                 ]
                 ([ viewEnrollmentTableHeader ] 
                 ++ List.map viewEnrollment omResponse.om.enrollments
-                ++ [addNewEnrollmentView omResponse.newEnrollmentStudents omResponse.newEnrollmentLecturers]
+                ++ [addNewEnrollmentView omResponse.newEnrollmentStudents 
+                omResponse.newEnrollmentLecturers omResponse.newEnrollmentIsValid
+                omResponse.enrollmentStudentsStyle omResponse.enrollmentLecturersStyle]
                 )
             ]
         ]
 
-addNewStudentView : String -> String -> String -> Html Msg
-addNewStudentView id name email =
+addNewStudentView : String -> String -> String -> Bool -> String -> String -> String -> Html Msg
+addNewStudentView id name email newStudentIsValid studentIdStyle studentNameStyle studentEmailStyle =
     tr []
         [ td [ style "border" "0px", style "padding" "0px", style "font-family" "Courier" ]
-            [ input [ style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "id", value id, onInput NewStudentIdChange ] [] ]
+            [ input [  style "color" studentIdStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "id", value id, onInput NewStudentIdChange ] [] ]
         , td [ style "border" "0px", style "padding" "0px", style "font-family" "Courier" ]
-            [ input [ style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "name", value name, onInput NewStudentNameChange ] [] ]
+            [ input [  style "color" studentNameStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "name", value name, onInput NewStudentNameChange ] [] ]
         , td [ style "border" "0px", style "padding" "0px", style "font-family" "Courier" ]
-            [ input [ style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "email", value email, onInput NewStudentEmailChange ] [] ]
+            [ input [  style "color" studentEmailStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "email", value email, onInput NewStudentEmailChange ] [] ]
         , td [ ]
-            [ button [ style "height" "28px", style "margin" "0px", onClick POSTNewStudent ] [
+            [ button [ style "height" "28px", style "margin" "0px", onClick POSTNewStudent, disabled (not newStudentIsValid) ] [
                 i [ ]
                     [ Filled.person_add 16 (Color <| Color.rgb 0 0 0) ]
             ] ]
         ]
 
-addNewLecturerView : String -> String -> String -> Html Msg
-addNewLecturerView id name email =
+addNewLecturerView : String -> String -> String -> Bool -> String -> String -> String -> Html Msg
+addNewLecturerView id name email newLecturerIsValid lecturerIdStyle lecturerNameStyle lecturerEmailStyle =
     tr []
         [ td [ style "border" "0px", style "padding" "0px", style "font-family" "Courier" ]
-            [ input [ style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "id", value id, onInput NewLecturerIdChange ] [] ]
+            [ input [ style "color" lecturerIdStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "id", value id, onInput NewLecturerIdChange ] [] ]
         , td [ style "border" "0px", style "padding" "0px", style "font-family" "Courier" ]
-            [ input [ style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "name", value name, onInput NewLecturerNameChange ] [] ]
+            [ input [ style "color" lecturerNameStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "name", value name, onInput NewLecturerNameChange ] [] ]
         , td [ style "border" "0px", style "padding" "0px", style "font-family" "Courier" ]
-            [ input [ style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "email", value email, onInput NewLecturerEmailChange ] [] ]
+            [ input [ style "color" lecturerEmailStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "email", value email, onInput NewLecturerEmailChange ] [] ]
         , td [ ]
-            [ button [ style "height" "28px", style "margin" "0px", onClick POSTNewLecturer ] [ 
+            [ button [ style "height" "28px", style "margin" "0px", onClick POSTNewLecturer, disabled (not newLecturerIsValid) ] [ 
                 i [ ]
                     [ Filled.person_add 16 (Color <| Color.rgb 0 0 0) ]
             ] ]
         ]
 
-addNewEnrollmentView : String -> String -> Html Msg
-addNewEnrollmentView students lecturers =
+addNewEnrollmentView : String -> String -> Bool -> String -> String -> Html Msg
+addNewEnrollmentView students lecturers newEnrollmentIsValid enrollmentStudentsStyle enrollmentLecturersStyle =
     tr []
         [ td [ style "border" "0px", style "padding" "0px", style "font-family" "Courier" ]
-            [ input [ style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "students", value students, onInput NewEnrollmentStudentsChange ] [] ]
+            [ input [ style "color" enrollmentStudentsStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "students", value students, onInput NewEnrollmentStudentsChange ] [] ]
         , td [ style "border" "0px", style "padding" "0px", style "font-family" "Courier" ]
-            [ input [ style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "lecturers", value lecturers, onInput NewEnrollmentLecturersChange ] [] ]
+            [ input [ style "color" enrollmentLecturersStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "lecturers", value lecturers, onInput NewEnrollmentLecturersChange ] [] ]
         , td [ ]
-            [ button [ style "height" "28px", style "margin" "0px", onClick POSTNewEnrollment ] [ 
+            [ button [ style "height" "28px", style "margin" "0px", onClick POSTNewEnrollment, disabled (not newEnrollmentIsValid) ] [ 
                 i [ ]
                     [ Filled.person_add 16 (Color <| Color.rgb 0 0 0) ]
             ] ]
@@ -994,6 +1011,8 @@ update msg omResponse =
         NewStudentIdChange newId ->
             ( { omResponse
                 | newStudentId = newId
+                , newStudentIsValid = MyObjectModel.checkStudentUnique newId omResponse.newStudentName omResponse.newStudentEmail omResponse.om.students
+                , studentIdStyle = if MyObjectModel.checkStudentIdUnique newId omResponse.om.students then "black" else "red"
               }
             , Cmd.none
             )
@@ -1001,6 +1020,8 @@ update msg omResponse =
         NewStudentNameChange newName ->
             ( { omResponse
                 | newStudentName = newName
+                , newStudentIsValid = MyObjectModel.checkStudentUnique omResponse.newStudentId newName omResponse.newStudentEmail omResponse.om.students
+                , studentNameStyle = if MyObjectModel.checkStudentNameUnique newName omResponse.om.students then "black" else "red"
               }
             , Cmd.none
             )
@@ -1008,6 +1029,8 @@ update msg omResponse =
         NewStudentEmailChange newEmail ->
             ( { omResponse
                 | newStudentEmail = newEmail
+                , newStudentIsValid = MyObjectModel.checkStudentUnique omResponse.newStudentId omResponse.newStudentName newEmail omResponse.om.students
+                , studentEmailStyle = if MyObjectModel.checkStudentEmailUnique newEmail omResponse.om.students then "black" else "red"
               }
             , Cmd.none
             )
@@ -1015,6 +1038,8 @@ update msg omResponse =
         NewLecturerIdChange newId ->
             ( { omResponse
                 | newLecturerId = newId
+                , newLecturerIsValid = MyObjectModel.checkLecturerUnique newId omResponse.newLecturerName omResponse.newLecturerEmail omResponse.om.lecturers
+                , lecturerIdStyle = if MyObjectModel.checkLecturerIdUnique newId omResponse.om.lecturers then "black" else "red"
               }
             , Cmd.none
             )
@@ -1022,6 +1047,8 @@ update msg omResponse =
         NewLecturerNameChange newName ->
             ( { omResponse
                 | newLecturerName = newName
+                , newLecturerIsValid = MyObjectModel.checkLecturerUnique omResponse.newLecturerId newName omResponse.newLecturerEmail omResponse.om.lecturers
+                , lecturerNameStyle = if MyObjectModel.checkLecturerNameUnique newName omResponse.om.lecturers then "black" else "red"
               }
             , Cmd.none
             )
@@ -1029,6 +1056,8 @@ update msg omResponse =
         NewLecturerEmailChange newEmail ->
             ( { omResponse
                 | newLecturerEmail = newEmail
+                , newLecturerIsValid = MyObjectModel.checkLecturerUnique omResponse.newLecturerId omResponse.newLecturerName newEmail omResponse.om.lecturers
+                , lecturerEmailStyle = if MyObjectModel.checkLecturerEmailUnique newEmail omResponse.om.lecturers then "black" else "red"
               }
             , Cmd.none
             )
@@ -1036,6 +1065,9 @@ update msg omResponse =
         NewEnrollmentStudentsChange newStudents ->
             ( { omResponse
                 | newEnrollmentStudents = newStudents
+                , newEnrollmentIsValid = MyObjectModel.checkEnrollmentUnique newStudents omResponse.newEnrollmentLecturers omResponse.om.enrollments
+                , enrollmentStudentsStyle = if MyObjectModel.checkEnrollmentUnique newStudents omResponse.newEnrollmentLecturers omResponse.om.enrollments 
+                then "black" else "red"
               }
             , Cmd.none
             )
@@ -1043,6 +1075,9 @@ update msg omResponse =
         NewEnrollmentLecturersChange newLecturers ->
             ( { omResponse
                 | newEnrollmentLecturers = newLecturers
+                , newEnrollmentIsValid = MyObjectModel.checkEnrollmentUnique omResponse.newEnrollmentStudents newLecturers omResponse.om.enrollments
+                , enrollmentLecturersStyle = if MyObjectModel.checkEnrollmentUnique omResponse.newEnrollmentStudents newLecturers omResponse.om.enrollments 
+                then "black" else "red"
               }
             , Cmd.none
             )
@@ -1117,14 +1152,25 @@ init _ =
             }
       , newStudentId = ""
       , newStudentName = ""
-      , newStudentEmail = ""      
+      , newStudentEmail = ""   
+      , newStudentIsValid = False   
       , newLecturerId = ""
       , newLecturerName = ""
       , newLecturerEmail = ""
+      , newLecturerIsValid = False
       , newEnrollmentStudents = ""
       , newEnrollmentLecturers = ""
+      , newEnrollmentIsValid = False
       , mySQLSchema = Content.sqlSchema
       , mySQLPolicy = Content.nakedPolicy
+      , studentNameStyle = "black"
+      , studentIdStyle = "black"
+      , studentEmailStyle = "black"
+    , lecturerNameStyle = "black"
+    , lecturerIdStyle = "black"
+    , lecturerEmailStyle = "black"
+    , enrollmentStudentsStyle = "black"
+    , enrollmentLecturersStyle = "black"
       }
     , getResetCommand
     )
