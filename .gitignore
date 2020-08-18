@@ -6,3 +6,4 @@ repl-temp-*
 *.js
 # linking file
 DONOTCOMMIT/*
+Http/Request.elm
