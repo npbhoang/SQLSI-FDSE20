@@ -9,7 +9,7 @@ import Browser
 import Color
 import Json.Encode as Encode
 import Html exposing (Html, Attribute, div, text, a, i, br, ul, li, button, pre, code, input, table, th, tr, td, h3, img)
-import Html.Attributes exposing (style, placeholder, href, target, src, width, height, value, disabled)
+import Html.Attributes exposing (style, placeholder, href, target, src, width, height, value, disabled, class)
 import Html.Events exposing (onClick, onInput)
 import Http exposing (Error(..))
 import Material.Icons as Filled exposing (bookmarks, delete, person_add)
@@ -98,18 +98,13 @@ config =
         , minRows = 2
         , maxRows = 10
         }
-        |> AutoExpand.withAttribute (style "resize" "none")
-        |> AutoExpand.withAttribute (style "width" "80%")
-        |> AutoExpand.withAttribute (style "border" "1px black solid")
-        |> AutoExpand.withAttribute (style "border-radius" "4px")
-        |> AutoExpand.withAttribute (style "font-size" "16px")
-        |> AutoExpand.withAttribute (style "font-family" "Courier")
+        |> AutoExpand.withAttribute (class "autoExpand-style")
         |> AutoExpand.withAttribute (placeholder "Input your SQL query here!")
 
 
 view : MyObjectModelResponse -> Html Msg
 view model =
-    div [ style "background-image" "linear-gradient(to bottom right, #048bdb, white)" ]
+    div [ class "div-main-background" ]
         [ annoucementView model
         , navView model
         , mainContentView model
@@ -118,18 +113,11 @@ view model =
 
 
 annoucementView : MyObjectModelResponse -> Html Msg
-annoucementView model =
+annoucementView _ =
     div
-        [ style "height" "auto"
-        , style "background-color" "#f3006c"
-        , style "text-align" "center"
-        , style "color" "white"
-        , style "font-size" "20px"
-        , style "font-family" "Times New Roman"
-        , style "font-weight" "900"
-        , style "padding" "5px"
+        [ class "div-header-noti-background"
         ]
-        [ i [ style "padding" "5px" ]
+        [ i [ class "i-logo" ]
             [ Filled.bookmarks 16 (Color <| Color.rgb 96 181 204)
             ]
         , text "17 Aug: Update ready for the submission version in FDSE-2020!"
@@ -147,35 +135,16 @@ navView model =
 introductoryView : MyObjectModelResponse -> Html Msg
 introductoryView model =
     div
-        [ style "border-bottom" "1px solid rgba(0,0,0,0.1)"
-        , style "box-shadow" "0 1px 0 rgba(255,255,255,0.1)"
-        , style "height" "60px"
-        ]
-        [ div
-            [ style "float" "left"
-            , style "color" "white"
-            , style "padding-top" "18px"
-            , style "padding-left" "10%"
-            , style "width" "30%"
-            , style "font-weight" "500"
-            , style "font-family" "Times New Roman"
-            , style "font-size" "2vw"
-            ]
-            [ text "Vietnamese-German University"
-            ]
+        [ class "div-header-intro-breakline" ]
+        [ div [ class "div-header-intro-left-content" ]
+            [ text "Vietnamese-German University" ]
         , div
-            [ style "display" "inline-block"
-            , style "margin" "0 auto"
-            , style "padding-top" "10px"
-            , style "width" "20%"
-            , style "float" "center"
-            , style "text-align" "center"
-            ]
+            [ class "div-header-intro-center-content" ]
             [ a
                 [ href "https://github.com/SE-at-VGU/SQLSI"
                 , target "_blank"
                 ]
-                [ img [ src "github-logo.png", width 40, height 40 ] []
+                [ img [ class "github-logo" ] []
                 ]
             ]
         ]
@@ -185,30 +154,17 @@ titleView : MyObjectModelResponse -> Html Msg
 titleView model =
     div []
         [ div
-            [ style "text-align" "center"
-            , style "color" "white"
-            , style "font-size" "100px"
-            , style "font-family" "Roboto"
-            , style "padding-top" "70px"
-            ]
-            [ text "SQLSI"
-            ]
+            [ class "div-title" ]
+            [ text "SQLSI" ]
         , div
-            [ style "text-align" "center"
-            , style "color" "white"
-            , style "font-size" "48px"
-            , style "font-family" "Roboto"
-            , style "padding-bottom" "90px"
-            ]
-            [ text "SQL Security Injector"
-            ]
+            [ class "div-sub-title" ]
+            [ text "SQL Security Injector" ]
         ]
 
 
 mainContentView : MyObjectModelResponse -> Html Msg
 mainContentView model =
-    div [ style "height" "auto", style "width" "100%", style "display" "flex"
-        , style "flex-wrap" "wrap"]
+    div [ class "div-main-content-background" ]
         [ leftMainDiv model
         , middleMainDiv model
         , rightMainDiv model
@@ -217,29 +173,18 @@ mainContentView model =
 
 leftMainDiv : MyObjectModelResponse -> Html Msg
 leftMainDiv model =
-    div [ style "height" "100%", style "float" "left", style "flex" "1 1 10%" ]
-        []
+    div [ class "div-left-main-content-background" ] []
 
 rightMainDiv : MyObjectModelResponse -> Html Msg
 rightMainDiv model =
-    div [ style "height" "100%", style "float" "left", style "flex" "3 1 10%" ]
-        []
+    div [ class "div-right-main-content-background" ] []
 
 middleMainDiv : MyObjectModelResponse -> Html Msg
 middleMainDiv model =
     div
-        [ style "display" "inline-block"
-        , style "width" "80%"
-        , style "float" "center"
-        , style "height" "100%"
-        , style "background-color" "white"
-        , style "border-radius" "5px"
-        , style "flex" "2 1 80%"
-        ]
+        [ class "div-main-main-content-background" ]
         [ div [] [ introductionContentView model ]
-        , div [style "font-family" "Times New Roman"
-        , style "font-size" "20px"
-        , style "margin" "5% 5% 5px 5%"] [
+        , div [ class "div-content-main-content", style "margin" "5% 5% 5px 5%"] [
             text "Please, be aware that SQLSI is an on-going research project. SQLSI does not cover yet the full SQL language. In particular, it covers the JOIN clause, WHERE clause and sub-select as described in the manuscripts."
             , br [] []
             , text "The database instance depicts scenario VGU#2 in the manuscript. Note that, the fields inlcude unique constraints and delete does not allow cascading."
@@ -252,9 +197,7 @@ middleMainDiv model =
 introductionContentView : MyObjectModelResponse -> Html Msg
 introductionContentView model =
     div
-        [ style "font-family" "Times New Roman"
-        , style "font-size" "20px"
-        ]
+        [ class "div-content-main-content" ]
         [ div [ style "margin" "5%" ] [ 
             text "This web service is intended for readers of our manuscripts:"
             , ul [] [
@@ -262,33 +205,21 @@ introductionContentView model =
                 ]
             , text "In particular, the contextual model is fixed on the model University, as described in our manuscripts, namely:"
         ]
-        , div [ style "background-color" "#282c34" ] [ sqlSchemaView model ]
+        , div [ class "div-code-example" ] [ sqlSchemaView model ]
         , div [ style "margin" "5%" ] [ 
             text "The security policy is fixed on the policy SecVGU#C, as described in our manuscripts, namely:"
         ]
-        , div [ style "background-color" "#282c34" ] [ sqlPolicyView model ]
+        , div [ class "div-code-example" ] [ sqlPolicyView model ]
         ]
 
 sqlPolicyView : MyObjectModelResponse -> Html Msg
 sqlPolicyView model =
     div []
         [ button 
-            [ style "border-radius" "5px"
-            , style "padding" "2px 6px" 
-            , style "background-color" "#669"
-            , style "color" "#fff"
-            , style "font-family" "Source Sans Pro,Roboto,Open Sans,Arial,sans-serif"
-            , style "font-size" ".6rem"
-            , style "font-weight" "700"
+            [ class "button-code-inline"
             , onClick UPDATEMyPolicyTextual ] [ text "TEXTUAL" ]
         , button 
-            [ style "border-radius" "5px"
-            , style "padding" "2px 6px" 
-            , style "background-color" "#6ecd56"
-            , style "color" "#fff"
-            , style "font-family" "Source Sans Pro,Roboto,Open Sans,Arial,sans-serif"
-            , style "font-size" ".6rem"
-            , style "font-weight" "700"
+            [ class "button-code-inline"
             , onClick UPDATEMyPolicyJSON ] [ text "JSON" ]
         , div [style "padding" "10px 5% 10px 5%", style "overflow" "auto" ] [
         useTheme oneDark
@@ -303,22 +234,10 @@ sqlSchemaView : MyObjectModelResponse -> Html Msg
 sqlSchemaView model =
     div [ ]
         [ button 
-            [ style "border-radius" "5px"
-            , style "padding" "2px 6px" 
-            , style "background-color" "#33a9dc"
-            , style "color" "#fff"
-            , style "font-family" "Source Sans Pro,Roboto,Open Sans,Arial,sans-serif"
-            , style "font-size" ".6rem"
-            , style "font-weight" "700"
+            [ class "button-code-inline"
             , onClick UPDATEMySQLSchemaSQL ] [ text "SQL" ]
         , button 
-            [ style "border-radius" "5px"
-            , style "padding" "2px 6px" 
-            , style "background-color" "#6ecd56"
-            , style "color" "#fff"
-            , style "font-family" "Source Sans Pro,Roboto,Open Sans,Arial,sans-serif"
-            , style "font-size" ".6rem"
-            , style "font-weight" "700"
+            [ class "button-code-inline"
             , onClick UPDATEMySQLSchemaJSON ] [ text "JSON" ]
         , div [style "padding" "10px 5% 10px 5%", style "overflow" "auto" ] [
         useTheme oneDark
@@ -341,7 +260,7 @@ queryView model =
         [ div
             [ style "text-align" "left"
             , style "font-size" "20px"
-            , style "padding" "px 10px 10px 10px"
+            , style "padding" "10px 10px 10px 10px"
             , style "border-radius" "5px"
             , style "color" "black"
             ]
@@ -387,21 +306,14 @@ queryResultViewOrErrorView model =
 viewMyQueryResult : MyQueryReturned.MyQueryReturned -> Html Msg
 viewMyQueryResult model =
     div [ style "text-align" "center" ]
-        [ table
-            [ style "border" "1px solid black"
-            , style "font-family" "Courier"
-            , style "margin-left" "auto"
-            , style "margin-right" "auto"
-            , style "color" "black"
-            ]
+        [ table [] 
             ([ viewTableHeaders model.attributes ] ++ List.map viewRecord model.records)
         ]
 
 
 viewValue : MyQueryReturned.MyEntryReturned -> Html Msg
 viewValue entry =
-    th [ style "border" "1px solid black", style "font-family" "Courier", style "text-align" "left", style "color" "black" ]
-        [ text entry.value ]
+    th [] [ text entry.value ]
 
 
 viewRecord : MyQueryReturned.MyRowReturned -> Html Msg
@@ -418,7 +330,7 @@ viewTableHeaders attributes =
 
 viewTableHeader : String -> Html Msg
 viewTableHeader attribute =
-    th [ style "border" "1px solid black", style "font-family" "Courier", style "text-align" "left", style "color" "black" ]
+    th []
         [ text attribute ]
 
 
@@ -457,13 +369,7 @@ viewMyObjectModel omResponse =
             ]
             [ h3 [ style "text-align" "center" ] [ text "Student" ]
             , table
-                [ style "border" "1px solid black"
-                , style "font-family" "Courier"
-                , style "margin-left" "auto"
-                , style "margin-right" "auto"
-                , style "table-layout" "fixed"
-                , style "font-size" "12px"
-                ]
+                []
                 ([ viewStudentTableHeader ]
                     ++ List.map viewStudent omResponse.om.students
                     ++ [addNewStudentView omResponse.newStudentId 
@@ -478,13 +384,7 @@ viewMyObjectModel omResponse =
             ]
             [ h3 [ style "text-align" "center" ] [ text "Lecturer" ]
             , table
-                [ style "border" "1px solid black"
-                , style "font-family" "Courier"
-                , style "margin-left" "auto"
-                , style "margin-right" "auto"
-                , style "table-layout" "fixed"
-                , style "font-size" "12px"
-                ]
+                []
                 ([ viewLecturerTableHeader ] 
                 ++ List.map viewLecturer omResponse.om.lecturers
                 ++ [addNewLecturerView omResponse.newLecturerId 
@@ -499,13 +399,7 @@ viewMyObjectModel omResponse =
             ]
             [ h3 [ style "text-align" "center" ] [ text "Enrollment" ]
             , table
-                [ style "border" "1px solid black"
-                , style "font-family" "Courier"
-                , style "margin-left" "auto"
-                , style "margin-right" "auto"
-                , style "table-layout" "fixed"
-                , style "font-size" "12px"
-                ]
+                []
                 ([ viewEnrollmentTableHeader ] 
                 ++ List.map viewEnrollment omResponse.om.enrollments
                 ++ [addNewEnrollmentView omResponse.newEnrollmentStudents 
@@ -518,11 +412,11 @@ viewMyObjectModel omResponse =
 addNewStudentView : String -> String -> String -> Bool -> String -> String -> String -> Html Msg
 addNewStudentView id name email newStudentIsValid studentIdStyle studentNameStyle studentEmailStyle =
     tr []
-        [ td [ style "border" "0px", style "padding" "0px", style "font-family" "Courier" ]
-            [ input [  style "color" studentIdStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "id", value id, onInput NewStudentIdChange ] [] ]
-        , td [ style "border" "0px", style "padding" "0px", style "font-family" "Courier" ]
+        [ td []
+            [ input [ style "color" studentIdStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "id", value id, onInput NewStudentIdChange ] [] ]
+        , td []
             [ input [  style "color" studentNameStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "name", value name, onInput NewStudentNameChange ] [] ]
-        , td [ style "border" "0px", style "padding" "0px", style "font-family" "Courier" ]
+        , td []
             [ input [  style "color" studentEmailStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "email", value email, onInput NewStudentEmailChange ] [] ]
         , td [ ]
             [ button [ style "height" "28px", style "margin" "0px", onClick POSTNewStudent, disabled (not newStudentIsValid) ] [
@@ -534,11 +428,11 @@ addNewStudentView id name email newStudentIsValid studentIdStyle studentNameStyl
 addNewLecturerView : String -> String -> String -> Bool -> String -> String -> String -> Html Msg
 addNewLecturerView id name email newLecturerIsValid lecturerIdStyle lecturerNameStyle lecturerEmailStyle =
     tr []
-        [ td [ style "border" "0px", style "padding" "0px", style "font-family" "Courier" ]
+        [ td []
             [ input [ style "color" lecturerIdStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "id", value id, onInput NewLecturerIdChange ] [] ]
-        , td [ style "border" "0px", style "padding" "0px", style "font-family" "Courier" ]
+        , td []
             [ input [ style "color" lecturerNameStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "name", value name, onInput NewLecturerNameChange ] [] ]
-        , td [ style "border" "0px", style "padding" "0px", style "font-family" "Courier" ]
+        , td []
             [ input [ style "color" lecturerEmailStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "email", value email, onInput NewLecturerEmailChange ] [] ]
         , td [ ]
             [ button [ style "height" "28px", style "margin" "0px", onClick POSTNewLecturer, disabled (not newLecturerIsValid) ] [ 
@@ -550,9 +444,9 @@ addNewLecturerView id name email newLecturerIsValid lecturerIdStyle lecturerName
 addNewEnrollmentView : String -> String -> Bool -> String -> String -> Html Msg
 addNewEnrollmentView students lecturers newEnrollmentIsValid enrollmentStudentsStyle enrollmentLecturersStyle =
     tr []
-        [ td [ style "border" "0px", style "padding" "0px", style "font-family" "Courier" ]
+        [ td []
             [ input [ style "color" enrollmentStudentsStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "students", value students, onInput NewEnrollmentStudentsChange ] [] ]
-        , td [ style "border" "0px", style "padding" "0px", style "font-family" "Courier" ]
+        , td []
             [ input [ style "color" enrollmentLecturersStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "lecturers", value lecturers, onInput NewEnrollmentLecturersChange ] [] ]
         , td [ ]
             [ button [ style "height" "28px", style "margin" "0px", onClick POSTNewEnrollment, disabled (not newEnrollmentIsValid) ] [ 
@@ -564,10 +458,7 @@ addNewEnrollmentView students lecturers newEnrollmentIsValid enrollmentStudentsS
 footerView : MyObjectModelResponse -> Html Msg
 footerView model =
     div
-        [ style "height" "auto"
-        , style "background-color" "orange"
-        , style "text-align" "center"
-        ]
+        [ class "div-footer-background" ]
         [ div
             [ style "float" "left"
             , style "color" "black"
@@ -601,11 +492,11 @@ footerView model =
 viewStudentTableHeader : Html Msg
 viewStudentTableHeader =
     tr []
-        [ th [ style "border" "1px solid black", style "font-family" "Courier", style "text-align" "left" ]
+        [ th [  ]
             [ text "Student_id" ]
-        , th [ style "border" "1px solid black", style "font-family" "Courier", style "text-align" "left" ]
+        , th [  ]
             [ text "name" ]
-        , th [ style "border" "1px solid black", style "font-family" "Courier", style "text-align" "left" ]
+        , th [  ]
             [ text "email" ]
         , th [ style "border" "0" ] []
         ]
@@ -614,11 +505,11 @@ viewStudentTableHeader =
 viewLecturerTableHeader : Html Msg
 viewLecturerTableHeader =
     tr []
-        [ th [ style "border" "1px solid black", style "font-family" "Courier", style "text-align" "left" ]
+        [ th [  ]
             [ text "Lecturer_id" ]
-        , th [ style "border" "1px solid black", style "font-family" "Courier", style "text-align" "left" ]
+        , th [  ]
             [ text "name" ]
-        , th [ style "border" "1px solid black", style "font-family" "Courier", style "text-align" "left" ]
+        , th [  ]
             [ text "email" ]
         , th [ style "border" "0" ] []
         ]
@@ -627,9 +518,9 @@ viewLecturerTableHeader =
 viewEnrollmentTableHeader : Html Msg
 viewEnrollmentTableHeader =
     tr []
-        [ th [ style "border" "1px solid black", style "font-family" "Courier", style "text-align" "left" ]
+        [ th [  ]
             [ text "students" ]
-        , th [ style "border" "1px solid black", style "font-family" "Courier", style "text-align" "left" ]
+        , th [  ]
             [ text "lecturers" ]
         , th [ style "border" "0" ] []
         ]

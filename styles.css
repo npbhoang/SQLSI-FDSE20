@@ -1,0 +1,148 @@
+.div-main-background {
+    background-image: linear-gradient(to bottom right, #048bdb, white);
+}
+
+.div-main-content-background {
+    height: auto;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.div-left-main-content-background {
+    height: 100%;
+    float: left;
+    flex: 1 1 10%;
+}
+
+.div-right-main-content-background {
+    height: 100%;
+    float: left;
+    flex: 3 1 10%;
+}
+
+.div-main-main-content-background {
+    display: inline-block;
+    width: 80%;
+    height: 100%;
+    background-color: white;
+    border-radius: 5px;
+    flex: 2 1 80%;
+}
+
+.div-footer-background {
+    height: auto;
+    background-color: orange;
+    text-align: center;
+}
+
+.div-content-main-content {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 20px;
+}
+
+.div-code-example {
+    background-color: #282c34;
+}
+
+table {
+    border: 1px solid black;
+    font-family: 'Courier New', Courier, monospace;
+    margin-left: auto;
+    margin-right: auto;
+    color: black;
+}
+
+th {
+    border: 1px solid black;
+    font-family:  'Courier New', Courier, monospace;
+    text-align: left;
+    color: black;
+}
+
+td {
+    border: 0px;
+    padding: 0px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.button-code-inline {
+    border-radius: 5px;
+    padding: 2px 6px;
+    background-color: #669;
+    color: white;
+    font-family: Source Sans Pro,Roboto,Open Sans,Arial,sans-serif;
+    font-size: .6rem;
+    font-weight: 700;
+}
+
+.autoExpand-style {
+    resize : none;
+    width: 80%;
+    border: 1px black solid;
+    border-radius: 4px;
+    font-size: 16px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.div-header-noti-background {
+    height: auto;
+    background-color: #f3006c;
+    text-align: center;
+    color: white;
+    font-size: 20px;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 900;
+    padding: 5px;
+}
+
+.div-header-intro-breakline {
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.1);
+    height: 60px;
+}
+
+.div-header-intro-left-content {
+    float: left;
+    color: white;
+    padding-top: 18px;
+    padding-left: 10%;
+    width: 30%;
+    font-weight: 500;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 2vw;
+}
+
+.div-header-intro-center-content {
+    display: inline-block;
+    margin: 0 auto;
+    padding-top: 10px;
+    width: 20%;
+    text-align: center;
+}
+
+.div-title {
+    text-align: center;
+    color: white;
+    font-size: 100px;
+    font-family: Roboto;
+    padding-top: 70px;
+}
+
+.div-sub-title {
+    text-align: center;
+    color: white;
+    font-size: 48px;
+    font-family: Roboto;
+    padding-top: 90px;
+}
+
+.github-logo {
+    src: "github-logo.png";
+    width: 40;
+    height: 40;
+}
+
+.i-logo {
+    padding: 5px;
+}
