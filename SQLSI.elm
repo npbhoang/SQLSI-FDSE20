@@ -120,7 +120,7 @@ annoucementView _ =
         [ i [ class "i-logo" ]
             [ Filled.bookmarks 16 (Color <| Color.rgb 96 181 204)
             ]
-        , text "17 Aug: Update ready for the submission version in FDSE-2020!"
+        , text "10 Mar: Update ready for the submission version in SNCS-2021!"
         ]
 
 
@@ -189,7 +189,15 @@ middleMainDiv model =
             , br [] []
             , text "The database instance depicts scenario VGU#2 in the manuscript. Note that, the fields inlcude unique constraints and delete does not allow cascading."
         ]
-        , div [ style "margin" "1%" ] [ objectModelView model ]
+        -- , div [ style "margin" "1%" ] [ objectModelView model ]
+        , div [ style "margin" "1%" ] [
+            img [ src "VGU2c.png", style "width" "50%"
+                    , style "align-items" "center"
+                    , style "display" "block"
+                    , style "margin-left" "auto"
+                    , style "margin-right" "auto" 
+            ] []
+        ]
         , div [ style "padding-top" "10px", style "background-color" "white" ] [ queryView model ]
         ]
 
@@ -286,7 +294,7 @@ queryView model =
         , div [ style "text-align" "center" ]
             [ button [ style "width" "100px", style "height" "40px", style "border-radius" "5px", onClick POSTExecuteQueryHttpRequest ] 
             [ text "Execute!" ]
-            , button [ style "margin-left" "10px", style "width" "150px", style "height" "40px", style "border-radius" "5px"
+            , button [ style "margin-left" "10px", style "width" "150px", style "height" "40px", disabled True, style "border-radius" "5px"
             , onClick GETResetScenario ] [ text "Reset Scenario!" ]
             ]
         , div [ style "text-align" "center", style "padding" "10px" ] [ queryResultViewOrErrorView model ]
@@ -359,52 +367,45 @@ viewError errorMessageString backgroundColor =
 viewMyObjectModel : MyObjectModelResponse -> Html Msg
 viewMyObjectModel omResponse =
     div
-        [ style "display" "flex"
-        , style "flex-wrap" "wrap"
+        [ style "display" "block"
         ]
         [ div
-            [ style "flex" "1"
-            , style "height" "100%"
-            , style "padding" "5px"
+            [ style "height" "100%"
             ]
             [ h3 [ style "text-align" "center" ] [ text "Student" ]
             , table
                 []
                 ([ viewStudentTableHeader ]
                     ++ List.map viewStudent omResponse.om.students
-                    ++ [addNewStudentView omResponse.newStudentId 
-                    omResponse.newStudentName omResponse.newStudentEmail omResponse.newStudentIsValid
-                    omResponse.studentIdStyle omResponse.studentNameStyle omResponse.studentEmailStyle]
+                    -- ++ [addNewStudentView omResponse.newStudentId 
+                    -- omResponse.newStudentName omResponse.newStudentEmail omResponse.newStudentIsValid
+                    -- omResponse.studentIdStyle omResponse.studentNameStyle omResponse.studentEmailStyle]
                 )
             ]
         , div
-            [ style "flex" "2"
-            , style "height" "100%"
-            , style "padding" "5px"
+            [ style "height" "100%"
             ]
             [ h3 [ style "text-align" "center" ] [ text "Lecturer" ]
             , table
                 []
                 ([ viewLecturerTableHeader ] 
                 ++ List.map viewLecturer omResponse.om.lecturers
-                ++ [addNewLecturerView omResponse.newLecturerId 
-                omResponse.newLecturerName omResponse.newLecturerEmail omResponse.newLecturerIsValid
-                omResponse.lecturerIdStyle omResponse.lecturerNameStyle omResponse.lecturerEmailStyle]
+                -- ++ [addNewLecturerView omResponse.newLecturerId 
+                -- omResponse.newLecturerName omResponse.newLecturerEmail omResponse.newLecturerIsValid
+                -- omResponse.lecturerIdStyle omResponse.lecturerNameStyle omResponse.lecturerEmailStyle]
                 )
             ]
         , div
-            [ style "flex" "3"
-            , style "height" "100%"
-            , style "padding" "5px"
+            [ style "padding" "5px"
             ]
             [ h3 [ style "text-align" "center" ] [ text "Enrollment" ]
             , table
                 []
                 ([ viewEnrollmentTableHeader ] 
                 ++ List.map viewEnrollment omResponse.om.enrollments
-                ++ [addNewEnrollmentView omResponse.newEnrollmentStudents 
-                omResponse.newEnrollmentLecturers omResponse.newEnrollmentIsValid
-                omResponse.enrollmentStudentsStyle omResponse.enrollmentLecturersStyle]
+                -- ++ [addNewEnrollmentView omResponse.newEnrollmentStudents 
+                -- omResponse.newEnrollmentLecturers omResponse.newEnrollmentIsValid
+                -- omResponse.enrollmentStudentsStyle omResponse.enrollmentLecturersStyle]
                 )
             ]
         ]
@@ -413,13 +414,13 @@ addNewStudentView : String -> String -> String -> Bool -> String -> String -> St
 addNewStudentView id name email newStudentIsValid studentIdStyle studentNameStyle studentEmailStyle =
     tr []
         [ td []
-            [ input [ style "color" studentIdStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "id", value id, onInput NewStudentIdChange ] [] ]
+            [ input [ style "color" studentIdStyle, placeholder "id", value id, onInput NewStudentIdChange ] [] ]
         , td []
-            [ input [  style "color" studentNameStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "name", value name, onInput NewStudentNameChange ] [] ]
+            [ input [  style "color" studentNameStyle, placeholder "name", value name, onInput NewStudentNameChange ] [] ]
         , td []
-            [ input [  style "color" studentEmailStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "email", value email, onInput NewStudentEmailChange ] [] ]
+            [ input [  style "color" studentEmailStyle, placeholder "email", value email, onInput NewStudentEmailChange ] [] ]
         , td [ ]
-            [ button [ style "height" "28px", style "margin" "0px", onClick POSTNewStudent, disabled (not newStudentIsValid) ] [
+            [ button [ style "margin" "0px", onClick POSTNewStudent, disabled (not newStudentIsValid) ] [
                 i [ ]
                     [ Filled.person_add 16 (Color <| Color.rgb 0 0 0) ]
             ] ]
@@ -429,11 +430,11 @@ addNewLecturerView : String -> String -> String -> Bool -> String -> String -> S
 addNewLecturerView id name email newLecturerIsValid lecturerIdStyle lecturerNameStyle lecturerEmailStyle =
     tr []
         [ td []
-            [ input [ style "color" lecturerIdStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "id", value id, onInput NewLecturerIdChange ] [] ]
+            [ input [ style "color" lecturerIdStyle, style "width" "100px", style "height" "28px", placeholder "id", value id, onInput NewLecturerIdChange ] [] ]
         , td []
-            [ input [ style "color" lecturerNameStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "name", value name, onInput NewLecturerNameChange ] [] ]
+            [ input [ style "color" lecturerNameStyle, style "width" "100px", style "height" "28px", placeholder "name", value name, onInput NewLecturerNameChange ] [] ]
         , td []
-            [ input [ style "color" lecturerEmailStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "email", value email, onInput NewLecturerEmailChange ] [] ]
+            [ input [ style "color" lecturerEmailStyle, style "width" "100px", style "height" "28px", placeholder "email", value email, onInput NewLecturerEmailChange ] [] ]
         , td [ ]
             [ button [ style "height" "28px", style "margin" "0px", onClick POSTNewLecturer, disabled (not newLecturerIsValid) ] [ 
                 i [ ]
@@ -445,9 +446,9 @@ addNewEnrollmentView : String -> String -> Bool -> String -> String -> Html Msg
 addNewEnrollmentView students lecturers newEnrollmentIsValid enrollmentStudentsStyle enrollmentLecturersStyle =
     tr []
         [ td []
-            [ input [ style "color" enrollmentStudentsStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "students", value students, onInput NewEnrollmentStudentsChange ] [] ]
+            [ input [ style "color" enrollmentStudentsStyle, style "width" "100px", style "height" "28px", placeholder "students", value students, onInput NewEnrollmentStudentsChange ] [] ]
         , td []
-            [ input [ style "color" enrollmentLecturersStyle, style "border" "1px solid black", style "width" "100px", style "height" "28px", placeholder "lecturers", value lecturers, onInput NewEnrollmentLecturersChange ] [] ]
+            [ input [ style "color" enrollmentLecturersStyle, style "width" "100px", style "height" "28px", placeholder "lecturers", value lecturers, onInput NewEnrollmentLecturersChange ] [] ]
         , td [ ]
             [ button [ style "height" "28px", style "margin" "0px", onClick POSTNewEnrollment, disabled (not newEnrollmentIsValid) ] [ 
                 i [ ]
@@ -469,7 +470,7 @@ footerView model =
             , style "font-family" "Times New Roman"
             , style "font-size" "1.4vw"
             ]
-            [ text "© 2020 Hoang Nguyen. Built in Elm Programming Language. All Rights Reserved."
+            [ text "@ 2020 Hoang Nguyen. Built in Elm Programming Language. All Rights Reserved."
             ]
         , div
             [ style "display" "inline-block"
@@ -529,11 +530,11 @@ viewEnrollmentTableHeader =
 viewStudent : MyObjectModel.Student -> Html Msg
 viewStudent student =
     tr []
-        [ td [ style "border" "1px solid black", style "font-family" "Courier", style "overflow" "hidden" ]
+        [ td [ style "font-family" "Courier", style "overflow" "hidden" ]
             [ text student.id ]
-        , td [ style "border" "1px solid black", style "font-family" "Courier", style "overflow" "hidden" ]
+        , td [ style "font-family" "Courier", style "overflow" "hidden" ]
             [ text student.name ]
-        , td [ style "border" "1px solid black", style "font-family" "Courier", style "overflow" "hidden" ]
+        , td [ style "font-family" "Courier", style "overflow" "hidden" ]
             [ text student.email ]
         , td [ style "width" "34px" ]
             [ button [ style "width" "32px", style "height" "30px", style "margin" "0px", onClick (DELETEStudent student.id) ] [ 
@@ -546,11 +547,11 @@ viewStudent student =
 viewLecturer : MyObjectModel.Lecturer -> Html Msg
 viewLecturer lecturer =
     tr []
-        [ td [ style "border" "1px solid black", style "font-family" "Courier" ]
+        [ td [style "font-family" "Courier" ]
             [ text lecturer.id ]
-        , td [ style "border" "1px solid black", style "font-family" "Courier" ]
+        , td [ style "font-family" "Courier" ]
             [ text lecturer.name ]
-        , td [ style "border" "1px solid black", style "font-family" "Courier" ]
+        , td [ style "font-family" "Courier" ]
             [ text lecturer.email ]
         , td [ ]
             [ button [ style "height" "28px", style "margin" "0px", onClick (DELETELecturer lecturer.id) ] [ 
@@ -563,9 +564,9 @@ viewLecturer lecturer =
 viewEnrollment : MyObjectModel.Enrollment -> Html Msg
 viewEnrollment enrollment =
     tr []
-        [ td [ style "border" "1px solid black", style "font-family" "Courier" ]
+        [ td [ style "font-family" "Courier" ]
             [ text enrollment.students ]
-        , td [ style "border" "1px solid black", style "font-family" "Courier" ]
+        , td [ style "font-family" "Courier" ]
             [ text enrollment.lecturers ]
         , td [ ]
             [ button [ style "height" "28px", style "margin" "0px", onClick (DELETEEnrollment enrollment.students enrollment.lecturers) ] [ 
@@ -737,7 +738,7 @@ update msg omResponse =
 
         POSTExecuteQuery_DataReceived (Err httpError) ->
             ( { omResponse
-                | errorMessageForQuery = Just "Sorry! There is something wrong with the input SQL. Please contact the authors for explanation or bug report!"
+                | errorMessageForQuery = Just ("Sorry! There is something wrong with the input SQL. Please contact the authors for explanation or bug report!" ++ "\n" ++ buildErrorMessage httpError)
               }
             , Cmd.none
             )

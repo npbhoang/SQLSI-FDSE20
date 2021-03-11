@@ -1,29 +1,29 @@
 module Http.Request exposing (..)
 
 getAllDataCommandURL : String
-getAllDataCommandURL = "Your API"
+getAllDataCommandURL = "http://localhost:8080/sqlsirest/rest/default"
 
 getResetCommandURL : String
-getResetCommandURL = "Your API"
+getResetCommandURL = "http://localhost:8080/sqlsirest/rest/default/reset"
 
 executeQueryCommandURL : String
-executeQueryCommandURL = "Your API" 
+executeQueryCommandURL = "http://localhost:8080/sqlsirest/rest/default/execute"
 
 createNewStudentURL : String
-createNewStudentURL = "Your API"
+createNewStudentURL = "http://localhost:8080/sqlsirest/rest/default/insert/student"
 
 createNewLecturerURL : String
-createNewLecturerURL = "Your API"
+createNewLecturerURL = "http://localhost:8080/sqlsirest/rest/default/insert/lecturer"
 
 createNewEnrollmentURL : String
-createNewEnrollmentURL = "Your API"
+createNewEnrollmentURL = "http://localhost:8080/sqlsirest/rest/default/insert/enrollment"
 
 deleteStudentURL : String
-deleteStudentURL = "Your API"
+deleteStudentURL = "http://localhost:8080/sqlsirest/rest/default/delete/student"
 
 deleteLecturerURL : String
-deleteLecturerURL = "Your API"
+deleteLecturerURL = "http://localhost:8080/sqlsirest/rest/default/delete/lecturer"
 
 deleteEnrollmentURL : String
-deleteEnrollmentURL = "Your API"
+deleteEnrollmentURL = "http://localhost:8080/sqlsirest/rest/default/delete/enrollment"
 

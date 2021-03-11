@@ -3,7 +3,7 @@ module Model.Content exposing (nakedPolicy, jsonPolicy, sqlSchema, jsonSchema)
 nakedPolicy : String
 nakedPolicy = """Any lecturer can know its students.
 Any lecturer can know his/her own email, as well as the emails of his/her students.
-Any lecturer can know its colleagues’ emails, where two lecturers are colleagues if there is at least one student enrolled with both of them. 
+Any lecturer can know its colleagues emails, where two lecturers are colleagues if there is at least one student enrolled with both of them. 
 Any lecturer can know its colleagues.
 """
 
